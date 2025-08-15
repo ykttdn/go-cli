@@ -16,8 +16,8 @@ jobs:
 
             - name: Format code
               run: |
-                gofmt -d .
-                if [ $? -ne 0 ]; then
+                diff_output=$(gofmt -d . | tee /dev/tty)
+                if [[ -n "$diff_output" ]]; then
                   echo "Code is not formatted correctly"
                   exit 1
                 fi
