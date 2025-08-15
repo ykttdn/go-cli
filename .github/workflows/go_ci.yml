@@ -1,0 +1,36 @@
+name: CI
+
+on: push
+
+jobs:
+    format:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+
+            - name: Set up Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version-file: go.mod
+
+            - name: Format code
+              run: |
+                gofmt -d .
+                if [ $? -ne 0 ]; then
+                  echo "Code is not formatted correctly"
+                  exit 1
+                fi
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+
+            - name: Set up Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version-file: go.mod
+
+            - name: Run tests
+              run: go test ./...
