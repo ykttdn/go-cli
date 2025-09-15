@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
+	"os"
 	"strings"
 )
 
-func echo(input string, hasNoTrailingLine bool, interpolates bool) string {
+func echo(w io.Writer, input string, hasNoTrailingLine bool, interpolates bool) {
 	var result string
 
 	if len(input) > 0 {
@@ -30,7 +32,7 @@ func echo(input string, hasNoTrailingLine bool, interpolates bool) string {
 		result += "\n"
 	}
 
-	return result
+	fmt.Fprintf(w, "%s", result)
 }
 
 func main() {
@@ -41,5 +43,5 @@ func main() {
 
 	input := strings.Join(flag.Args(), " ")
 
-	fmt.Printf("%s", echo(input, *hasNoTrailingLine, *interpolates))
+	echo(os.Stdout, input, *hasNoTrailingLine, *interpolates)
 }

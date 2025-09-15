@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"testing"
 )
 
@@ -18,9 +19,11 @@ func TestEcho(t *testing.T) {
 	}
 
 	for _, tt := range table {
-		got := echo(tt.input, tt.hasNoTrailingLine, tt.interpolates)
-		if got != tt.want {
-			t.Errorf("echo(%q, %v, %v) = %q, want %q", tt.input, tt.hasNoTrailingLine, tt.interpolates, got, tt.want)
+		var buf bytes.Buffer
+		echo(&buf, tt.input, tt.hasNoTrailingLine, tt.interpolates)
+
+		if buf.String() != tt.want {
+			t.Errorf("echo(%q, %v, %v) = %q, want %q", tt.input, tt.hasNoTrailingLine, tt.interpolates, buf.String(), tt.want)
 		}
 	}
 }
