@@ -9,30 +9,28 @@ import (
 )
 
 func echo(w io.Writer, input string, hasNoTrailingLine bool, interpolates bool) {
-	var result string
+	var output string
 
-	if len(input) > 0 {
-		if interpolates {
-			replacer := strings.NewReplacer(
-				"\\a", "\a",
-				"\\b", "\b",
-				"\\f", "\f",
-				"\\n", "\n",
-				"\\r", "\r",
-				"\\t", "\t",
-				"\\v", "\v",
-			)
-			result = replacer.Replace(input)
-		} else {
-			result = input
-		}
+	if interpolates {
+		replacer := strings.NewReplacer(
+			"\\a", "\a",
+			"\\b", "\b",
+			"\\f", "\f",
+			"\\n", "\n",
+			"\\r", "\r",
+			"\\t", "\t",
+			"\\v", "\v",
+		)
+		output = replacer.Replace(input)
+	} else {
+		output = input
 	}
 
 	if !hasNoTrailingLine {
-		result += "\n"
+		output += "\n"
 	}
 
-	fmt.Fprintf(w, "%s", result)
+	fmt.Fprintf(w, "%s", output)
 }
 
 func main() {
